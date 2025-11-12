@@ -1,0 +1,320 @@
+{
+  "general_small_model_pool": {
+    "description": "【总项】全局小模型池 (轮询+故障切换)",
+    "type": "list",
+    "default": [],
+    "hint": "（推荐！）配置一组轻量小模型 (如 Gemma 2B)。当其他特定模型未配置时，将自动使用此池。"
+  },
+  "enable_heartflow": {
+    "description": "启用心流主动回复",
+    "type": "bool",
+    "default": false,
+    "hint": "启用后，机器人将智能判断群聊消息并主动回复"
+  },
+  "judge_provider_names": {
+    "description": "【判断】判断模型提供商列表 (轮询+故障切换)",
+    "type": "list",
+    "default": [],
+    "hint": "（可选）专门用于“判断”的模型。如果留空，将自动使用“全局小模型池”。"
+  },
+  "summarize_provider_name": {
+    "description": "【摘要】人格摘要模型提供商",
+    "type": "string",
+    "default": "",
+    "hint": "（可选）专门用于“摘要”的模型。如果留空，将自动使用“全局小模型池”中的第一个。",
+    "_special": "select_provider"
+  },
+  "reply_threshold": {
+    "description": "评分回复阈值(0-1)",
+    "type": "float",
+    "default": 0.6,
+    "hint": "综合评分高于此阈值时，触发回复（双轨之一）"
+  },
+    "humanization_word_count": {
+    "description": "【新】人性化字数限制",
+    "type": "int",
+    "default": 30,
+    "hint": "提示词强化作用，不保证真的有用"
+  },
+  "summary_judgment_count": {
+    "description": "【API优化】总结判断消息数",
+    "type": "int",
+    "default": 10,
+    "hint": "在“总结模式”下，累积多少条消息后进行一次判断"
+  },
+  "single_judgment_window": {
+    "description": "【API优化】单次判断窗口数",
+    "type": "int",
+    "default": 10,
+    "hint": "触发回复后，连续进行单条判断的消息窗口大小"
+  },
+  "energy_initial": {
+    "description": "【新】初始精力值(0-1)",
+    "type": "float",
+    "default": 0.5,
+    "hint": "插件刚加载时，群聊的默认精力值"
+  },
+  "energy_threshold": {
+    "description": "【新】精力回复阈值(0-1)",
+    "type": "float",
+    "default": 0.8,
+    "hint": "精力值高于此阈值时，即使评分不高也会触发回复（双轨之一）"
+  },
+  "energy_decay_rate": {
+    "description": "精力衰减速度",
+    "type": "float",
+    "default": 0.1,
+    "hint": "每次回复后精力下降的幅度"
+  },
+  "energy_recovery_rate": {
+    "description": "精力恢复速度",
+    "type": "float",
+    "default": 0.02,
+    "hint": "每次判断不回复时精力恢复的幅度"
+  },
+  "mood_increment": {
+    "description": "【新】情绪变化幅度(0-1)",
+    "type": "float",
+    "default": 0.1,
+    "hint": "每次正面/负面判断对心情数值的影响大小"
+  },
+  "mood_decay": {
+    "description": "【新】情绪向中性衰减速度(0-1)",
+    "type": "float",
+    "default": 0.05,
+    "hint": "当判断为中性时，心情向0.0恢复的速度"
+  },
+  "context_messages_count": {
+    "description": "上下文消息数量",
+    "type": "int",
+    "default": 5,
+    "hint": "判断时考虑的最近消息数量"
+  },
+  "whitelist_enabled": {
+    "description": "启用群聊白名单",
+    "type": "bool",
+    "default": false,
+    "hint": "启用后只有白名单中的群聊才会触发心流回复"
+  },
+  "chat_whitelist": {
+    "description": "群聊白名单",
+    "type": "list",
+    "default": [],
+    "hint": "允许心流回复的群聊sid列表，/sid获取"
+  },
+  "user_blacklist": {
+    "description": "【新】用户黑名单 (ID 列表)",
+    "type": "list",
+    "default": [],
+    "hint": "黑名单用户的消息将被大概率忽略。填入用户ID (如QQ号)"
+  },
+  "blacklist_pass_probability": {
+    "description": "【新】黑名单通过概率(0-1)",
+    "type": "float",
+    "default": 0.1,
+    "hint": "黑名单用户消息进入判断模型的概率，0为永不"
+  },
+  "judge_relevance": {
+    "description": "判断权重的内容相关度",
+    "type": "float",
+    "default": 0.25,
+    "hint": "针对判断权重的内容相关度设置，默认25%"
+  },
+  "judge_willingness": {
+    "description": "判断权重的回复意愿",
+    "type": "float",
+    "default": 0.2,
+    "hint": "针对判断权重的内容相关度设置，默认20%"
+  },
+  "judge_social": {
+    "description": "判断权重的社交适宜性",
+    "type": "float",
+    "default": 0.2,
+    "hint": "针对判断权重的内容相关度设置，默认20%"
+  },
+  "judge_timing": {
+    "description": "判断权重的时机相关性",
+    "type": "float",
+    "default": 0.15,
+    "hint": "针对判断权重的内容相关性设置，默认15%"
+  },
+  "judge_continuity": {
+    "description": "判断权重的对话连贯性",
+    "type": "float",
+    "default": 0.2,
+    "hint": "针对判断权重的内容相关性设置，默认20%"
+  },
+  "judge_include_reasoning": {
+    "description": "判断时是否包含理由",
+    "type": "bool",
+    "default": true,
+    "hint": "让小模型在判断时返回详细理由。关闭可轻微提升性能和鲁棒性。"
+  },
+  "judge_max_retries": {
+    "description": "判断失败最大重试次数 (针对JSON)",
+    "type": "int",
+    "default": 3,
+    "hint": "当小模型返回无效JSON时的最大重试次数（API错误会自动切换模型）"
+  },
+  "overload_cooldown_seconds": {
+    "description": "【新】判断模型过载冷却时间(秒)",
+    "type": "int",
+    "default": 60,
+    "hint": "所有判断模型均失败后，停止判断该群聊的时长"
+  },
+  "bot_nicknames": {
+    "description": "机器人的昵称列表",
+    "type": "list",
+    "default": [],
+    "hint": "（v4.1.1 修复）当消息以此昵称开头或结尾时，将强制回复且不耗精力。"
+  },
+  "force_reply_bonus_score": {
+    "description": "【v8 奖励】昵称/Poke 奖励分 (0-1)",
+    "type": "float",
+    "default": 0.5,
+    "hint": "（v8）当检测到 昵称 或 Poke 时，为综合评分添加的额外分数。0.5 几乎确保触发（因为默认阈值是 0.6）。"
+  },
+  "max_consecutive_replies": {
+    "description": "【v4.2 社交】最大连续回复数 (F4)",
+    "type": "int",
+    "default": 3,
+    "hint": "（人性化）机器人在连续回复N次后将强制“社交冷却”，直到群内有其他人发言。这不影响@或昵称回复。"
+  },
+  "tier_friend_score": {
+    "description": "【v4.3 社交】“朋友”评分阈值",
+    "type": "float",
+    "default": 50.0,
+    "hint": "（人性化）社交综合评分 > 50 时，机器人会将用户视为“朋友”。"
+  },
+  "tier_acquaintance_score": {
+    "description": "【v4.3 社交】“熟人”评分阈值",
+    "type": "float",
+    "default": 10.0,
+    "hint": "（人性化）社交综合评分 > 10 时，机器人会将用户视为“熟人”。"
+  },
+  "tier_avoiding_score": {
+    "description": "【v4.3 社交】“回避”评分阈值",
+    "type": "float",
+    "default": -20.0,
+    "hint": "（人性化）社交综合评分 < -15 时，机器人会将用户标记为“回避对象”。"
+  },
+  "score_positive_interaction": {
+    "description": "【v4.3 社交】积极互动加分",
+    "type": "float",
+    "default": 1.0,
+    "hint": "（人性化）机器人每次“回复”用户时，增加的社交分。"
+  },
+  "score_negative_interaction": {
+    "description": "【v4.3 社交】消极互动扣分",
+    "type": "float",
+    "default": -1.5,
+    "hint": "（人性化）机器人判断消息为“负面”且“不回复”时，扣除的社交分（应为负数）。"
+  },
+  "score_decay_rate_per_day": {
+    "description": "【v4.3 社交】关系衰减速率 (分/天)",
+    "type": "float",
+    "default": -0.5,
+    "hint": "（人性化）用户N天未发言，每天扣除的社交分（应为负数）。"
+  },
+  "social_memory_decay_days": {
+    "description": "【v4.2 社交】关系衰减起始天数 (M2)",
+    "type": "int",
+    "default": 3,
+    "hint": "（人性化）用户N天未发言，其“积极互动”计数将开始衰减。"
+  },
+  "emotion_decay_interval_hours": {
+    "description": "【v4.2 情绪】情绪被动衰减周期(小时) (F3)",
+    "type": "float",
+    "default": 1.0,
+    "hint": "（人性化）每隔N小时，机器人的心情会自动向“中性”(0.0)平复一次。"
+  },
+  "enable_user_profiles": {
+    "description": "【感知】启用用户画像 (群友识别)",
+    "type": "bool",
+    "default": false,
+    "hint": "启用后，机器人将开始“认识人”，并在判断时考虑历史互动"
+  },
+  "enable_image_recognition": {
+    "description": "【多模态】启用图片识别(VL)",
+    "type": "bool",
+    "default": false,
+    "hint": "启用后，将使用VL模型分析图片内容并纳入判断（仅限'单次判断'模式）"
+  },
+  "image_recognition_provider_name": {
+    "description": "【多模态】图片识别(VL)模型",
+    "type": "string",
+    "default": "",
+    "hint": "（必填，如果启用）必须是一个支持视觉的多模态模型。此项不会回退到全局池。",
+    "_special": "select_provider"
+  },
+  "image_recognition_prompt": {
+    "description": "【多模态】图片识别提示词",
+    "type": "string",
+    "default": "这是一张图。请用5-10个词简要描述这张图的核心内容。如果是表情包，请描述情绪。",
+    "hint": "VL模型的提示词"
+  },
+  "enable_poke_response": {
+    "description": "【多模态】启用戳一戳响应",
+    "type": "bool",
+    "default": false,
+    "hint": "启用后，机器人被戳时将触发心流判断（绕过总结模式）"
+  },
+  "proactive_enabled": {
+    "description": "启用主动发起话题",
+    "type": "bool",
+    "default": false,
+    "hint": "启用后，机器人在群聊沉寂且精力充沛时会主动发起话题。依赖[启用心流主动回复]总开关。"
+  },
+  "proactive_check_interval_seconds": {
+    "description": "主动话题检查周期(秒)",
+    "type": "int",
+    "default": 600,
+    "hint": "后台任务每隔多少秒检查一次所有群聊是否满足主动发起话题的条件"
+  },
+  "proactive_energy_threshold": {
+    "description": "主动话题精力阈值(0-1)",
+    "type": "float",
+    "default": 0.9,
+    "hint": "精力值高于此阈值时，才可能主动发起话题"
+  },
+  "proactive_silence_threshold_minutes": {
+    "description": "主动话题沉寂时间(分钟)",
+    "type": "int",
+    "default": 120,
+    "hint": "群聊最后一条消息距今超过此分钟数，才可能主动发起话题"
+  },
+  "proactive_global_cooldown_seconds": {
+    "description": "主动话题全局冷却(秒)",
+    "type": "int",
+    "default": 60,
+    "hint": "成功发起一个话题后，全局冷却多久再检查下一个群聊，防止短时刷屏"
+  },
+  "enable_emotion_sending": {
+    "description": "【表情】启用心流表情包",
+    "type": "bool",
+    "default": false,
+    "hint": "启用后，Heartflow 将在回复后，根据心情判断是否发送表情包。"
+  },
+  "emotion_model_provider_name": {
+    "description": "【表情】心情判断模型提供商",
+    "type": "string",
+    "default": "",
+    "hint": "（可选）专门用于“心情”的模型。如果留空，将自动使用“全局小模型池”中的第一个。",
+    "_special": "select_provider"
+  },
+  "emotion_descriptions": {
+    "description": "【表情】表情包类别描述 (WebUI编辑)",
+    "type": "text",
+    "default": "{\n  \"happy\": \"积极、开心的场景\",\n  \"sad\": \"悲伤、遗憾的场景\",\n  \"angry\": \"生气、抱怨的场景\",\n  \"confused\": \"困惑、不解的场景\",\n  \"like\": \"表达喜爱或赞同的场景\",\n  \"shy\": \"害羞或尴尬的场景\"\n}",
+    "hint": "JSON 格式，键为表情文件夹名(英文)，值为该心情的描述。将被注入到心情判断模型中。",
+    "editor_mode": true,
+    "editor_language": "json",
+    "editor_theme": "vs-dark"
+  },
+  "emotions_probability": {
+    "description": "【表情】表情出现概率 (0-100)",
+    "type": "int",
+    "default": 100,
+    "hint": "设置一个概率(%)，(v3.1) 仅影响“标准回复”，不影响强回/Poke。"
+  }
+}
